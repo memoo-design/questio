@@ -1,0 +1,28 @@
+body {
+    background-color: #121212;
+    color: white;
+}
+
+.container {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    max-width: 600px;
+}
+
+.form-control {
+    background-color: #2c2c2c;
+    color: white;
+    border: 1px solid white;
+}
+
+.form-control:focus {
+    background-color: #2c2c2c;
+    color: white;
+    border: 1px solid gray;
+}
+
+.btn-dark {
+    width: 100%;
+}

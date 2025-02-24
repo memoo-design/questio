@@ -1,0 +1,28 @@
+.navbar {
+    border-bottom: 2px solid white;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: gray !important;
+}
+
+.btn-outline-light {
+    border-color: white;
+    color: white;
+}
+
+.btn-outline-light:hover {
+    background-color: white;
+    color: black;
+}

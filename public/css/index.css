@@ -1,0 +1,222 @@
+/* General Styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #000000;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background-color:black !important;
+    border-bottom: 2px solid white;
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white !important;
+}
+
+.navbar-nav {
+    margin: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.navbar-nav .nav-link {
+    color:white !important;
+    font-size: 1.1rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #666666 !important;
+}
+.navbar-nav .nav-link:focus {
+    text-decoration: underline;
+    text-decoration-color: white; /* White underline */
+
+}
+
+
+/* Buttons */
+.btn-primary {
+    background-color: #000000;
+    color: white;
+    border: 2px solid black;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: white;
+    color: #000000;
+    border: 2px solid black;
+}
+
+/* Hero Banner */
+#Hero {
+    background: url('../images/heropage.jpg') no-repeat center center/cover;
+    height: 100vh;
+    color: black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom:15px solid #000000;
+}
+
+#hero-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+#hero-text h3 {
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+#button button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid black;
+    background: #000000;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+#button button:hover {
+    background: white;
+    color: black;
+}
+#services  {
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr;
+    border-radius: 2rem;
+  
+   
+  }
+  #service1text,#service2text,#service3text{
+    display: flexbox;
+    border:3px solid black;
+    
+    margin:30px ;
+    text-align: center;
+    padding:5x;
+    font-family: 'Times New Roman', Times, serif;
+    font-size:20px ;
+  
+  } 
+  #shead{
+   
+    margin-top: 20px;
+    text-align: center;
+    color: black;
+    text-transform: uppercase;
+    font-size:44px;
+    display: block;
+  
+  }
+
+/* Testimonials Section */
+#testimonial\ section {
+    padding: 50px 20px;
+    background:#000000;
+    color: white;
+    text-align: center;
+}
+
+.testimonial {
+    margin: 20px auto;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid grey;
+    transition: transform 0.3s ease-in-out;
+}
+
+.testimonial:hover {
+    transform: scale(1.05);
+}
+
+/* Contact Section */
+#Contact {
+    background: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+form label {
+    display: block;
+    margin: 10px 0;
+    color: black;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: white;
+    color: black;
+}
+
+form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: 2px solid black;
+    background: black;
+    color:#FCF6F5;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+form button:hover {
+    background: white;
+    color: black;
+}
+
+/* Footer */
+footer {
+    background-color: #FFFFFF;
+    color: black;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1rem;
+    border-top: 2px solid black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #Pricing_taglist {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #Hero h1 {
+        font-size: 2rem;
+    }
+
+    #Hero h3 {
+        font-size: 1.2rem;
+    }
+}

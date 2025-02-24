@@ -1,0 +1,130 @@
+body {
+    margin: 0;
+    height: auto;
+   
+    background-image: url('../images/signup.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+}
+
+
+#name , #pinfo {
+display:grid;
+grid-template-columns: 1fr 1fr;
+margin-bottom: 10px;
+}
+#pform{
+background-color: rgb(179, 188, 185,0.3);
+color:whitesmoke;
+height: auto;
+    width: 80%; 
+    max-width: 850px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0,0.2); /* Adding shadow for better contrast */
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:20px;
+
+}
+#pform > #user > h1{
+    text-align: center;
+}
+#lName{
+    margin-left:20px;
+}
+#fName,#lName {
+    display:inline-block;
+}
+ label{
+  display:block;
+    margin:10px 5px 10px 0px;
+    padding-top: 11px;
+}
+input,select{
+    height:22px;
+    border-radius: 5px;
+    width:auto;
+    margin-left: 10px;
+    background-color:rgba(242, 240, 239, 0.685);
+}
+textarea{
+    background-color:rgba(242, 240, 239, 0.685);
+}
+#Btn{
+    background-color: rgb(96, 94, 94);
+    width:250px;
+    height:50px;
+    font-size: 18px;
+    margin:0 auto;
+text-align: center;
+}
+#Btn:hover{
+background-color: black;
+color:whitesmoke;
+
+}
+
+ #login{
+display:grid;
+grid-template-columns: 1fr;
+ }
+
+
+ 
+@media (max-width: 768px) {
+    #pform {
+        width: 90%;
+        padding: 15px;
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 16px;
+    }
+
+    #fName,
+    #lName {
+        display: block;
+        width: 100%;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    #Btn {
+        width: 100%;
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    #pform {
+        width: 95%;
+        font-size: 16px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #Btn {
+        width: 100%;
+        font-size: 16px;
+        padding: 15px;
+    }
+}
