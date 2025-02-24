@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questio - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Include Animate.css for Bootstrap animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="public/css/index.css">
 </head>
 <body>
@@ -23,19 +25,20 @@ include_once '../questio/components/guest_header.php';
        <div id ="hero_img"></div>
        <a class="btn btn-primary sign-in-btn" href="../questio/pages/guest/register.php">Sign Up</a>
    </section>  
-   <section id="about-us">
-    <h1>About Us</h1>
-    <p>
-        Questio is a dynamic and user-friendly platform designed to revolutionize the way quizzes are created, shared, and evaluated. 
-        Our goal is to empower educators, students, and professionals by providing an intuitive interface that simplifies the assessment process. 
-        Whether you are a teacher managing student assessments, a student testing your knowledge, or an organization conducting skill evaluations, 
-        Questio offers a seamless experience with automated grading, insightful analytics, and interactive learning tools.
-    </p>
-    <p>
-        With Questio, education becomes more efficient, engaging, and insightful. Join us today and experience a smarter way to learn and assess knowledge!
-    </p>
-   </section>
-    
+  <!-- About Us Section (Full-Width Black Background) -->
+  <section id="aboutus" class="w-100 bg-black text-white text-center py-5 animate__animated animate__fadeIn">
+    <div class="container">
+        <h1 class="fw-bold animate__animated animate__slideInDown">About Us</h1>
+        <p class="lead animate__animated animate__slideInLeft animate__delay-0.5s">
+            Questio is a dynamic and user-friendly platform designed to revolutionize the way quizzes are created, shared, and evaluated. 
+            Our goal is to empower educators, students, and professionals by providing an intuitive interface that simplifies the assessment process.
+        </p>
+        <p class="lead animate__animated animate__slideInRight animate__delay-0.7s">
+            With Questio, education becomes more efficient, engaging, and insightful. Join us today and experience a smarter way to learn and assess knowledge!
+        </p>
+    </div>
+</section>
+
     <h1 id="shead">Our Services</h1>
     <section id="services">
              
