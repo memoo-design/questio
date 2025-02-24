@@ -95,16 +95,15 @@ include_once '../questio/components/guest_header.php';
     <h1>Why People Love QUESTIO</h1>
     <div class="testimonial">
     <FIELDSET>
-    <Legend>AUTHOR</legend><em>"I’ve been using ThinkPads for over a decade, and they’ve never let me down. From business trips to rough outdoor conditions, these laptops perform flawlessly every time!</em></FIELDSET>
+    <Legend>AUTHOR</legend><em>"Having a well-organized Question Bank allows me to maintain consistency in my quizzes and ensure fair assessments for all students.</em></FIELDSET>
     </div>
     <div class="testimonial">
        <FIELDSET>
-       <Legend>James T</legend><em>"The ThinkPad’s keyboard is a dream for someone like me who spends hours typing every day. Combine that with long battery life and robust security
-           , and it’s the ideal laptop for my work needs.</em></FIELDSET>
+       <Legend>James T</legend><em>The ability to store and organize questions in one place is a huge advantage. It ensures consistency across different tests and exams</em></FIELDSET>
        </div>
        <div class="testimonial">
            <FIELDSET>
-           <Legend>Priya K</legend><em>As an IT professional, I appreciate the power and security features of the ThinkPad series. It handles heavy workloads with ease, and I trust it with my most sensitive data.</em></FIELDSET>
+           <Legend>Priya K</legend><em>I love using Questio! The quizzes are interactive, and the auto-grading feature gives me instant feedback. It makes studying much easier!</em></FIELDSET>
            </div>
        </section>
        <section id="Contact">
