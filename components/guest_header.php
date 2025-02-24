@@ -7,11 +7,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#services">Our Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#testimonial section">Testimonials</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#service">Our Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#testimonial section">Testimonials</a></li>
                 <li class="nav-item"><a class="nav-link" href="#Contact">Contact Us</a></li>
-                
                 <li class="nav-item">
                     <a class="btn btn-primary sign-in-btn" href="../questio/pages/guest/login.php">Login In</a>
                 </li>

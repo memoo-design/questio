@@ -29,7 +29,7 @@ include_once '../questio/components/guest_header.php';
        <a class="btn btn-primary sign-in-btn" href="../questio/pages/guest/register.php">Sign Up</a>
    </section>  
   <!-- About Us Section (Full-Width Black Background) -->
-  <section id="aboutus" class="w-100 bg-black text-white text-center py-5 animate__animated animate__fadeIn">
+  <section id="about" class="w-100 bg-black text-white text-center py-5 animate__animated animate__fadeIn">
     <div class="container">
         <h1 class="fw-bold animate__animated animate__slideInDown">About Us</h1>
         <p class="lead animate__animated animate__slideInLeft animate__delay-0.5s">
@@ -41,7 +41,8 @@ include_once '../questio/components/guest_header.php';
         </p>
     </div>
 </section>
-<div class="service-section mb-5 mt-5">
+<section id="service">
+<div  class="service-section mb-5 mt-5">
     <div class="container-fluid">
         <h1 class="text-center mb-5">Our Services</h1>
         
@@ -90,7 +91,7 @@ include_once '../questio/components/guest_header.php';
         </div>
     </div>
 </div>
-
+</section>>
     <section id ="testimonial section">
     <h1>Why People Love QUESTIO</h1>
     <div class="testimonial">
@@ -108,12 +109,19 @@ include_once '../questio/components/guest_header.php';
        </section>
        <section id="Contact">
            <h1>Contact us</h1>
-           <form>
-               <label>"Enter your name: <input type="text"></label>
-               <label>E-mail: <input type="text"></label>
-               <label> Message<textarea cols="8" rows="8"></textarea></label>
-               <button>SEND MESSAGE</button>
-           </form>
+           <form action="logic/contact.php" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" required></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+
        </section>
       <!-- AOS JS -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
@@ -121,9 +129,6 @@ include_once '../questio/components/guest_header.php';
 <script>
     AOS.init();
 </script>
-
-
-       
    </body>
    </html>
    <?php
