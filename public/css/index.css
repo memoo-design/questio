@@ -81,38 +81,68 @@ body {
     margin-top: 10px;
 }
 
-/* Services Section */
-#services {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 30px;
-    border-radius: 2rem;
-    text-align: center;
+.service-section {
+    width: 100vw;
+    background-color: #f8f8f8;
+    padding: 50px 0;
+   
 }
 
-#service1text, #service2text, #service3text {
-    border: 3px solid black;
+/* Service Box Styling */
+.service-box {
     padding: 20px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    background: #f8f8f8;
+    text-align: center;
     border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
+    background: white;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(50px);
 }
 
-#service1text:hover, #service2text:hover, #service3text:hover {
+/* Fade-in Animation */
+.service-box.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Hover Effect */
+.service-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Margin Adjustments */
+.row {
+    margin: 0 auto; /* Centering */
+    max-width: 1200px; /* Keeps content from being too wide */
+}
+
+.service-box {
+    transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease-in-out;
+}
+.service-box:hover {
+    background-color: black !important;
+    color: white !important;
     transform: scale(1.05);
 }
-
-#shead {
-    margin-top: 20px;
-    text-align: center;
-    color: black;
-    text-transform: uppercase;
-    font-size: 44px;
-    display: block;
+/* Entrance Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
+.service-box {
+    animation: fadeInUp 0.8s ease-in-out;
+}
+
+
 
 /* Testimonials Section */
 #testimonial-section {

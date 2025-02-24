@@ -9,6 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Include Animate.css for Bootstrap animations -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<!-- AOS CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
     <link rel="stylesheet" href="public/css/index.css">
 </head>
 <body>
@@ -33,34 +36,61 @@ include_once '../questio/components/guest_header.php';
             Questio is a dynamic and user-friendly platform designed to revolutionize the way quizzes are created, shared, and evaluated. 
             Our goal is to empower educators, students, and professionals by providing an intuitive interface that simplifies the assessment process.
         </p>
-        <p class="lead animate__animated animate__slideInRight animate__delay-0.7s">
+        <p class="lead animate__animated animate__slideInRight animate__delay-0.git add s">
             With Questio, education becomes more efficient, engaging, and insightful. Join us today and experience a smarter way to learn and assess knowledge!
         </p>
     </div>
 </section>
+<div class="service-section mb-5 mt-5">
+    <div class="container-fluid">
+        <h1 class="text-center mb-5">Our Services</h1>
+        
+        <div class="row g-4 px-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up">
+                    <h3>Quiz Creation</h3>
+                    <p>Easily create interactive quizzes with correct answers.</p>
+                </div>
+            </div>
 
-    <h1 id="shead">Our Services</h1>
-    <section id="services">
-             
-             <div id="service1text">
-                      
-                      <h3>Quiz Creation</h3>
-                     <p> Easily create interactive quizzes with correct answers</p> 
-             </div>
-          
-               <div id="service2text">  
-            
-              <h3>Student Management</h3>
-              <p>Teachers can manage students and assign quizzes</p>
-              </div>
-          
-             <div id="service3text"> 
-            
-               <h3>Auto-Grading</h3>
-               <p>Automatic evaluation and scoring of student responses</p>
-              </div>
-    </section>
-  
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Student Management</h3>
+                    <p>Teachers can manage students and assign quizzes.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Auto-Grading</h3>
+                    <p>Automatic evaluation and scoring of student responses.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Analytics & Reports</h3>
+                    <p>Track student performance with real-time statistics and insights.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up" data-aos-delay="400">
+                    <h3>Time-Limited Quizzes</h3>
+                    <p>Enhance engagement with countdown timers for quizzes.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="service-box border border-dark border-3 rounded p-4 text-center" data-aos="fade-up" data-aos-delay="500">
+                    <h3>Question Bank</h3>
+                    <p>Store and reuse frequently asked questions for faster quiz creation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <section id ="testimonial section">
     <h1>Why People Love QUESTIO</h1>
     <div class="testimonial">
@@ -86,7 +116,15 @@ include_once '../questio/components/guest_header.php';
                <button>SEND MESSAGE</button>
            </form>
        </section>
+      <!-- AOS JS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 
+
+       
    </body>
    </html>
    <?php
