@@ -23,7 +23,18 @@ include_once '../questio/components/guest_header.php';
        <div id ="hero_img"></div>
        <a class="btn btn-primary sign-in-btn" href="../questio/pages/guest/register.php">Sign Up</a>
    </section>  
-   
+   <section id="about-us">
+    <h1>About Us</h1>
+    <p>
+        Questio is a dynamic and user-friendly platform designed to revolutionize the way quizzes are created, shared, and evaluated. 
+        Our goal is to empower educators, students, and professionals by providing an intuitive interface that simplifies the assessment process. 
+        Whether you are a teacher managing student assessments, a student testing your knowledge, or an organization conducting skill evaluations, 
+        Questio offers a seamless experience with automated grading, insightful analytics, and interactive learning tools.
+    </p>
+    <p>
+        With Questio, education becomes more efficient, engaging, and insightful. Join us today and experience a smarter way to learn and assess knowledge!
+    </p>
+   </section>
     
     <h1 id="shead">Our Services</h1>
     <section id="services">

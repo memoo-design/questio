@@ -3,13 +3,49 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #FFFFFF;
-    color: #000000;
+    color: black;
     line-height: 1.6;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* About Us Section */
+#about-us {
+    background-color: black;
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    animation: fadeIn 2s ease-in-out;
+    border-radius: 15px;
+    margin: 50px auto;
+    width: 80%;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+}
+
+#about-us h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: slideDown 1.5s ease-in-out forwards;
+}
+
+#about-us p {
+    font-size: 1.4rem;
+    font-weight: 300;
+    max-width: 850px;
+    margin: 15px auto;
+    line-height: 1.8;
+    opacity: 0;
+    animation: slideUp 1.5s ease-in-out 0.5s forwards;
 }
 
 /* Navbar */
 .navbar {
-    background-color:black !important;
+    background-color: black !important;
     border-bottom: 2px solid white;
     padding: 15px 0;
 }
@@ -28,7 +64,7 @@ body {
 }
 
 .navbar-nav .nav-link {
-    color:white !important;
+    color: white !important;
     font-size: 1.1rem;
     transition: color 0.3s ease-in-out;
 }
@@ -38,10 +74,8 @@ body {
 }
 .navbar-nav .nav-link:focus {
     text-decoration: underline;
-    text-decoration-color: white; /* White underline */
-
+    text-decoration-color: white;
 }
-
 
 /* Buttons */
 .btn-primary {
@@ -67,7 +101,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom:15px solid #000000;
+    border-bottom: 15px solid #000000;
+    padding: 20px;
 }
 
 #hero-text h1 {
@@ -80,55 +115,43 @@ body {
     margin-top: 10px;
 }
 
-#button button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: 2px solid black;
-    background: #000000;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
+/* Services Section */
+#services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    border-radius: 2rem;
+    text-align: center;
 }
 
-#button button:hover {
-    background: white;
-    color: black;
+#service1text, #service2text, #service3text {
+    border: 3px solid black;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
 }
-#services  {
-    display: grid;
-    grid-template-columns: 2fr 2fr 2fr;
-    border-radius: 2rem;
-  
-   
-  }
-  #service1text,#service2text,#service3text{
-    display: flexbox;
-    border:3px solid black;
-    
-    margin:30px ;
-    text-align: center;
-    padding:5x;
-    font-family: 'Times New Roman', Times, serif;
-    font-size:20px ;
-  
-  } 
-  #shead{
-   
+
+#service1text:hover, #service2text:hover, #service3text:hover {
+    transform: scale(1.05);
+}
+
+#shead {
     margin-top: 20px;
     text-align: center;
     color: black;
     text-transform: uppercase;
-    font-size:44px;
+    font-size: 44px;
     display: block;
-  
-  }
+}
 
 /* Testimonials Section */
-#testimonial\ section {
+#testimonial-section {
     padding: 50px 20px;
-    background:#000000;
+    background: black;
     color: white;
     text-align: center;
 }
@@ -136,9 +159,9 @@ body {
 .testimonial {
     margin: 20px auto;
     max-width: 800px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid grey;
     transition: transform 0.3s ease-in-out;
 }
@@ -160,7 +183,8 @@ form {
     text-align: left;
     border: 2px solid black;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
+    background: #f8f8f8;
 }
 
 form label {
@@ -184,7 +208,7 @@ form button {
     padding: 10px 20px;
     border: 2px solid black;
     background: black;
-    color:#FCF6F5;
+    color: white;
     cursor: pointer;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -207,16 +231,23 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    #Pricing_taglist {
-        flex-direction: column;
-        align-items: center;
-    }
-
     #Hero h1 {
         font-size: 2rem;
     }
 
     #Hero h3 {
         font-size: 1.2rem;
+    }
+
+    #services {
+        grid-template-columns: 1fr;
+    }
+
+    #about-us {
+        width: 95%;
+    }
+
+    form {
+        width: 90%;
     }
 }
