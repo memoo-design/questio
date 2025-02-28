@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $quiz_id = $stmt->insert_id;
 
-            // Insert questions and options (even if it's a draft)
+            // Insert questions and options (even =if it's a draft)
             foreach ($_POST['question'] as $index => $question_text) {
                 $question_text = trim($question_text);
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="text-center">Create a New Quiz</h1>
 
     <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
-        <form method="POST">
+        <form method="POST" action="quiz_create.php">
             <div class="mb-3">
                 <label class="form-label">Quiz Title:</label>
                 <input type="text" name="quiz_title" class="form-control" required>
@@ -147,9 +147,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
 let questionIndex = 1;
+
 function addQuestion() {
-    // Similar code for dynamically adding questions
+    let questionsDiv = document.getElementById("questions");
+
+    let newQuestion = document.createElement("div");
+    newQuestion.classList.add("question", "mb-3", "p-3", "border", "rounded", "position-relative");
+
+    newQuestion.innerHTML = `
+        <label class="form-label">Question:</label>
+        <input type="text" name="question[]" class="form-control mb-2" required>
+
+        <div class="options">
+            <label class="form-label">Options:</label>
+            <div class="input-group mb-2">
+                <span class="input-group-text">A</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">B</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">C</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">D</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+        </div>
+
+        <label class="form-label">Correct Answer:</label>
+        <select name="correct_option[${questionIndex}]" class="form-select">
+            <option value="0">A</option>
+            <option value="1">B</option>
+            <option value="2">C</option>
+            <option value="3">D</option>
+        </select>
+
+        <button type="button" class="btn btn-danger btn-sm mt-2 position-absolute top-0 end-0" onclick="deleteQuestion(this)">✖</button>
+    `;
+
+    questionsDiv.appendChild(newQuestion);
+    questionIndex++; // Increment index to maintain unique array keys
 }
+
+function deleteQuestion(button) {
+    button.parentElement.remove();
+}
+
 
 function deleteQuestion(button) {
     button.parentElement.remove();

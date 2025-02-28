@@ -92,7 +92,7 @@ $mysqli->close();
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
                                 <td><?= date("d M Y, h:i A", strtotime($quiz['created_at'])) ?></td>
                                 <td>
-                                    <a href="edit_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="view_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-warning btn-sm">View</a>
                                     <a href="delete_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
                                 </td>
                             </tr>
