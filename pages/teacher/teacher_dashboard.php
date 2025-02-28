@@ -129,6 +129,7 @@ $mysqli->close();
                         <?php foreach ($draftQuizzes as $quiz): ?>
                             <tr>
                                 <td><?= htmlspecialchars($quiz['title']) ?></td>
+                                <td><?= htmlspecialchars($quiz['subject']) ?></td>
                                 <td><?= htmlspecialchars($quiz['semester'] ?: 'N/A') ?></td>
                                 <td><?= htmlspecialchars($quiz['department']) ?></td>
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
