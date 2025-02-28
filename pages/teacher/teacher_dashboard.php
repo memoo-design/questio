@@ -12,7 +12,9 @@ $university = $_SESSION['university_name'] ?? ''; // Default to empty if not set
 
 
 // Fetch Published Quizzes
-$sql = "SELECT id, title, department, semester, time_limit, created_at FROM quiz WHERE teacher_id = ? AND status = 'published'";
+$sql = "SELECT id, title, subject, department, semester, time_limit, created_at 
+FROM quiz 
+WHERE teacher_id = ? AND status = 'published'";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $teacher_id);
 $stmt->execute();
@@ -20,7 +22,8 @@ $publishedQuizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 // Fetch Draft Quizzes
-$sql = "SELECT id, title, department, semester, time_limit, created_at FROM quiz WHERE teacher_id = ? AND status = 'draft'";
+$sql = "SELECT id, title, subject, department, semester, time_limit, created_at 
+FROM quiz  WHERE teacher_id = ? AND status = 'draft'";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $teacher_id);
 $stmt->execute();
@@ -75,6 +78,7 @@ $mysqli->close();
                 <thead class="table-dark">
                     <tr>
                         <th>Title</th>
+                        <th>Subject</th>
                         <th>Department</th>
                         <th>Semester</th>
                         <th>Time Limit</th>
@@ -87,6 +91,7 @@ $mysqli->close();
                         <?php foreach ($publishedQuizzes as $quiz): ?>
                             <tr>
                                 <td><?= htmlspecialchars($quiz['title']) ?></td>
+                                <td><?= htmlspecialchars($quiz['subject']) ?></td>
                                 <td><?= htmlspecialchars($quiz['department']) ?></td>
                                 <td><?= htmlspecialchars($quiz['semester'] ?: 'N/A') ?></td>
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
@@ -111,6 +116,7 @@ $mysqli->close();
                 <thead class="table-secondary">
                     <tr>
                         <th>Title</th>
+                        <th>Subject</th>
                         <th>Department</th>
                         <th>Semester</th>
                         <th>Time Limit</th>
@@ -123,8 +129,8 @@ $mysqli->close();
                         <?php foreach ($draftQuizzes as $quiz): ?>
                             <tr>
                                 <td><?= htmlspecialchars($quiz['title']) ?></td>
-                                <td><?= htmlspecialchars($quiz['department']) ?></td>
                                 <td><?= htmlspecialchars($quiz['semester'] ?: 'N/A') ?></td>
+                                <td><?= htmlspecialchars($quiz['department']) ?></td>
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
                                 <td><?= date("d M Y, h:i A", strtotime($quiz['created_at'])) ?></td>
                                 <td>
