@@ -1,10 +1,12 @@
-
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
     <div class="container">
-        <a class="navbar-brand" href="admin_dashboard.php">Questio - Admin Panel</a>
+        <!-- Logo -->
+        <a class="navbar-brand ms-0" href="../pages/admin/admin_dashboard.php">
+            <img src="../../public/images/logo.png"  width="20%"alt="Questio-Logo" class="logo">
+            Admin-Panel
+        </a>
 
-        <!-- Toggle button for mobile view -->
+   
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -13,21 +15,22 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="admin_dashboard.php">Dashboard</a>
+                    <a class="nav-link px-3" href="admin_dashboard.php">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="security.php">Security & Logs</a>
+                    <a class="nav-link px-3" href="assign_subject.php">Manage Subjects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin_profile.php">Profile</a>
+                    <a class="nav-link px-3" href="admin_profile.php">Profile</a>
                 </li>
                 <li class="nav-item">
                     <form method="POST" action="../../index.php" class="d-inline">
-                        <button type="submit" class="btn btn-outline-light">Logout</button>
+                        <button type="submit" class="btn btn-outline-light px-4">Logout</button>
                     </form>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
 
