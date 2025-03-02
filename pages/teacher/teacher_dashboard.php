@@ -8,8 +8,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
 }
 
 $teacher_id = $_SESSION['user_id'];
-$university = $_SESSION['university_name'] ?? ''; // Default to empty if not set
-
 
 // Fetch Published Quizzes
 $sql = "SELECT id, title, subject, department, semester, time_limit, created_at 
@@ -23,37 +21,37 @@ $stmt->close();
 
 // Fetch Draft Quizzes
 $sql = "SELECT id, title, subject, department, semester, time_limit, created_at 
-FROM quiz  WHERE teacher_id = ? AND status = 'draft'";
+FROM quiz  
+WHERE teacher_id = ? AND status = 'draft'";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $teacher_id);
 $stmt->execute();
 $draftQuizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Fetch students who attempted quizzes
+// Fetch students who attempted quizzes with grade and subject
 $sql = "SELECT 
     user.first_name, 
     user.last_name, 
     student_info.department,  
     student_info.semester,   
     quiz.title AS quiz_title, 
+    quiz.subject, 
     student_attempts.quiz_id, 
-    student_attempts.score 
+    student_attempts.grade 
 FROM student_attempts
 JOIN user ON student_attempts.student_id = user.id 
 JOIN student_info ON student_attempts.student_id = student_info.user_id  
 JOIN quiz ON student_attempts.quiz_id = quiz.id 
-WHERE user.university_name = ? 
-AND quiz.teacher_id = ?";
-
+WHERE quiz.teacher_id = ?";
 
 $stmt = $mysqli->prepare($sql);
-$stmt->bind_param("si", $university, $teacher_id);
+$stmt->bind_param("i", $teacher_id);
 $stmt->execute();
 $students = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
-
 $mysqli->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -97,13 +95,13 @@ $mysqli->close();
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
                                 <td><?= date("d M Y, h:i A", strtotime($quiz['created_at'])) ?></td>
                                 <td>
-                                    <a href="view_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-warning btn-sm">View</a>
-                                    <a href="delete_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
+                                    <a href="view_quiz.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-warning btn-sm">View</a>
+                                    <a href="delete_quiz.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="6" class="text-muted text-center">No published quizzes yet.</td></tr>
+                        <tr><td colspan="7" class="text-muted text-center">No published quizzes yet.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -130,23 +128,24 @@ $mysqli->close();
                             <tr>
                                 <td><?= htmlspecialchars($quiz['title']) ?></td>
                                 <td><?= htmlspecialchars($quiz['subject']) ?></td>
-                                <td><?= htmlspecialchars($quiz['semester'] ?: 'N/A') ?></td>
                                 <td><?= htmlspecialchars($quiz['department']) ?></td>
+                                <td><?= htmlspecialchars($quiz['semester'] ?: 'N/A') ?></td>
                                 <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
                                 <td><?= date("d M Y, h:i A", strtotime($quiz['created_at'])) ?></td>
                                 <td>
-                                    <a href="edit_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete_quiz.php?id=<?= $quiz['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
+                                    <a href="edit_quiz.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="delete_quiz.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quiz?');">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="6" class="text-muted text-center">No draft quizzes saved.</td></tr>
+                        <tr><td colspan="7" class="text-muted text-center">No draft quizzes saved.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
 
+        <!-- Students Who Attempted Quizzes -->
         <div>
             <h4>Students Who Attempted Quizzes</h4>
             <table class="table table-bordered">
@@ -155,8 +154,9 @@ $mysqli->close();
                         <th>Student Name</th>
                         <th>Department</th>
                         <th>Semester</th>
+                        <th>Subject</th>
                         <th>Quiz Title</th>
-                        <th>Marks Obtained</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -166,12 +166,13 @@ $mysqli->close();
                                 <td><?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?></td>
                                 <td><?= htmlspecialchars($student['department']) ?></td>
                                 <td><?= htmlspecialchars($student['semester']) ?></td>
+                                <td><?= htmlspecialchars($student['subject']) ?></td>
                                 <td><?= htmlspecialchars($student['quiz_title']) ?></td>
-                                <td><?= $student['score'] ?></td>
+                                <td><?= htmlspecialchars($student['grade']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="5" class="text-muted text-center">No quiz attempts recorded yet.</td></tr>
+                        <tr><td colspan="6" class="text-muted text-center">No quiz attempts recorded yet.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
