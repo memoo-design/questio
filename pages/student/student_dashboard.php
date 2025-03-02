@@ -120,12 +120,12 @@ $stmt_submitted->close();
                 </thead>
                 <tbody>
                     <?php while ($quiz = $result_submitted->fetch_assoc()): ?>
-                        <tr class="<?= ($quiz['grade'] === 'F') ? 'table-danger' : '' ?>">
+                        <tr class="<?= getGradeClass($quiz['grade']) ?>">
                             <td><?= htmlspecialchars($quiz['title']) ?></td>
                             <td><?= htmlspecialchars($quiz['subject']) ?></td>
                             <td><?= htmlspecialchars($quiz['score']) ?></td>
                             <td><?= htmlspecialchars($quiz['total_questions']) ?></td>
-                            <td><?= htmlspecialchars($quiz['grade']) ?></td>
+                            <td class="text-center"><?= htmlspecialchars($quiz['grade']) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -136,5 +136,25 @@ $stmt_submitted->close();
     </div>
 
     <?php include '../../components/student_footer.php'; ?>
+
+    <?php
+    // Function to get the Bootstrap class for the grade
+    function getGradeClass($grade) {
+        switch ($grade) {
+            case 'A':
+                return 'table-success'; // Green for A
+            case 'B':
+                return 'table-info';    // Light Blue for B
+            case 'C':
+                return 'table-warning'; // Yellow for C
+            case 'D':
+                return 'table-secondary'; // Grey for D
+            case 'F':
+                return 'table-danger';   // Red for F
+            default:
+                return ''; // No class for undefined grades
+        }
+    }
+    ?>
 </body>
 </html>
