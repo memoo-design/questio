@@ -3,7 +3,7 @@ session_start();
 require '../../config.php';
 
 // Check if student is logged in and request method is POST
-if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student' || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+if (!isset($_SESSION['roll_no']) || $_SESSION['role'] !== 'student' || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: student_dashboard.php");
     exit();
 }
@@ -14,7 +14,7 @@ if (!isset($_POST['quiz_id'], $_POST['answer']) || !is_array($_POST['answer'])) 
 }
 
 $quiz_id = (int)$_POST['quiz_id'];
-$student_id = $_SESSION['user_id'];
+$student_id = $_SESSION['user_id']; // Ensure 'user_id' exists in session
 $score = 0;
 $total_questions = count($_POST['answer']);
 
@@ -40,22 +40,40 @@ foreach ($_POST['answer'] as $question_id => $selected_option) {
         $stmt->fetch();
         $stmt->close();
 
-        if (!empty($is_correct)) {
+        if ($is_correct == 1) { // Ensure correct scoring
             $score++;
         }
     }
 }
 
-// Store attempt
-$stmt = $mysqli->prepare("INSERT INTO student_attempts (student_id, quiz_id, score, total_questions) VALUES (?, ?, ?, ?)");
+// Calculate percentage
+$percentage = ($total_questions > 0) ? ($score / $total_questions) * 100 : 0;
+
+// Determine grade
+if ($percentage >= 90) {
+    $grade = 'A+';
+} elseif ($percentage >= 80) {
+    $grade = 'A';
+} elseif ($percentage >= 70) {
+    $grade = 'B';
+} elseif ($percentage >= 60) {
+    $grade = 'C';
+} elseif ($percentage >= 50) {
+    $grade = 'D';
+} else {
+    $grade = 'F';
+}
+
+// Store attempt in database
+$stmt = $mysqli->prepare("INSERT INTO student_attempts (student_id, quiz_id, score, total_questions, grade) VALUES (?, ?, ?,  ?, ?)");
 if ($stmt) {
-    $stmt->bind_param("iiii", $student_id, $quiz_id, $score, $total_questions);
+    $stmt->bind_param("iiiis", $student_id, $quiz_id, $score, $total_questions, $grade);
     $stmt->execute();
     $stmt->close();
 }
 
 // Redirect to results page
-$_SESSION['quiz_result'] = "Quiz Submitted! Your Score: $score / $total_questions";
+$_SESSION['quiz_result'] = "Quiz Submitted! Your Score: $score / $total_questions (Percentage: " . round($percentage, 2) . "%, Grade: $grade)";
 header("Location: quiz_result.php");
 exit();
 ?>

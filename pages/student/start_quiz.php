@@ -2,7 +2,7 @@
 session_start();
 require '../../config.php';
 
-if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'student' || !isset($_GET['quiz_id'])) {
+if (!isset($_SESSION['roll_no']) || $_SESSION['role'] !== 'student' || !isset($_GET['quiz_id'])) {
     header("Location: student_dashboard.php");
     exit();
 }
@@ -34,9 +34,11 @@ $questions = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($quiz['title']) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
+    
     <script>
         let timeLeft = <?= $quiz['time_limit'] * 60 ?>; // Convert minutes to seconds
+        let quizSubmitted = false; // Track if the quiz was submitted
 
         function startTimer() {
             const timerDisplay = document.getElementById('timer');
@@ -44,6 +46,7 @@ $questions = $stmt->get_result();
                 let minutes = Math.floor(timeLeft / 60);
                 let seconds = timeLeft % 60;
                 timerDisplay.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
                 if (timeLeft <= 0) {
                     clearInterval(interval);
                     document.getElementById('quizForm').submit(); // Auto-submit
@@ -53,6 +56,54 @@ $questions = $stmt->get_result();
         }
 
         window.onload = startTimer;
+
+        // Prevent accidental exit
+        window.addEventListener('beforeunload', function (e) {
+            if (!quizSubmitted) {
+                e.preventDefault();
+                e.returnValue = 'Warning: Leaving this page will result in a zero score!';
+            }
+        });
+
+        // Auto-fail on exit
+        function autoFail() {
+            const data = new FormData();
+            data.append('quiz_id', <?= $quiz_id ?>);
+
+            // Try to use sendBeacon (better for unload events)
+            if (!navigator.sendBeacon('auto_fail.php', data)) {
+                // If sendBeacon fails, use fetch as a fallback
+                fetch('auto_fail.php', {
+                    method: 'POST',
+                    body: data
+                });
+            }
+        }
+
+        window.addEventListener('unload', function () {
+            if (!quizSubmitted) {
+                autoFail();
+            }
+        });
+
+        // Prevent back navigation
+        window.addEventListener('popstate', function () {
+            alert("Warning: Leaving the quiz will result in a zero score!");
+            autoFail();
+        });
+
+        // Disable right-click and F12 (Inspect Element)
+        document.addEventListener("contextmenu", (event) => event.preventDefault());
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "F12" || (event.ctrlKey && event.shiftKey && event.key === "I")) {
+                event.preventDefault();
+            }
+        });
+
+        // Mark quiz as submitted when submitted properly
+        function markAsSubmitted() {
+            quizSubmitted = true;
+        }
     </script>
 </head>
 <body class="bg-light">
@@ -60,7 +111,7 @@ $questions = $stmt->get_result();
         <h1 class="text-center"><?= htmlspecialchars($quiz['title']) ?></h1>
         <h3 id="timer" class="text-danger text-center"></h3>
 
-        <form id="quizForm" method="POST" action="submit_quiz.php">
+        <form id="quizForm" method="POST" action="submit_quiz.php" onsubmit="markAsSubmitted()">
             <input type="hidden" name="quiz_id" value="<?= $quiz_id ?>">
             <?php while ($question = $questions->fetch_assoc()): ?>
                 <div class="mb-3">
