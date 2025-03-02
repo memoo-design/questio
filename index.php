@@ -91,19 +91,20 @@ include_once '../questio/components/guest_header.php';
         </div>
     </div>
 </div>
-</section>>
-    <section id ="testimonial section">
-    <h1>Why People Love QUESTIO</h1>
-    <div class="testimonial">
-    <FIELDSET>
+</section >
+    <section id ="testimonial section" class="container-fluid bg-black py-4">
+    <h1 class="text-light text-center">Why People Love QUESTIO</h1>
+
+    <div class="testimonial" >
+    <FIELDSET class="border border-white  text-light p-3 rounded">
     <Legend>AUTHOR</legend><em>"Having a well-organized Question Bank allows me to maintain consistency in my quizzes and ensure fair assessments for all students.</em></FIELDSET>
     </div>
     <div class="testimonial">
-       <FIELDSET>
+       <FIELDSET class="border border-white  text-light p-3 rounded">
        <Legend>James T</legend><em>The ability to store and organize questions in one place is a huge advantage. It ensures consistency across different tests and exams</em></FIELDSET>
        </div>
        <div class="testimonial">
-           <FIELDSET>
+       <FIELDSET class="border border-white  text-light p-3 rounded">
            <Legend>Priya K</legend><em>I love using Questio! The quizzes are interactive, and the auto-grading feature gives me instant feedback. It makes studying much easier!</em></FIELDSET>
            </div>
        </section>
