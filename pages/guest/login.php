@@ -5,10 +5,12 @@ require_once "../../config.php"; // Include database connection
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = isset($_POST["role"]) ? htmlspecialchars($_POST["role"]) : "admin";
     $password = $_POST["password"];
-    
-    // Prepare query based on role
+    $error_msg = "";
+
     if ($role === "student") {
         $roll_no = htmlspecialchars($_POST["roll_no"]);
+
+        // Check if student exists
         $sql = "SELECT u.id, u.password FROM user u 
                 JOIN student_info s ON u.id = s.user_id 
                 WHERE s.roll_no = ? AND u.role = 'student'";
@@ -16,45 +18,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("s", $roll_no);
     } else {
         $email = htmlspecialchars($_POST["email"]);
+
+        // Check if teacher/admin exists
         $sql = "SELECT id, password FROM user WHERE email = ? AND role = ?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss", $email, $role);
     }
 
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+    // Execute query and fetch result
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
 
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user["password"])) {
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["role"] = $role;
-               $_SESSION["roll_no"]=$roll_no;
-               $_SESSION["email"]=$email;
-            // Redirect based on role
-            switch ($role) {
-                case "student":
-                    header("Location: ../student/student_dashboard.php");
-                    break;
-                case "teacher":
-                    header("Location: ../teacher/teacher_dashboard.php");
-                    break;
-                case "admin":
-                    header("Location: ../admin/admin_dashboard.php");
-                    break;
+            // Verify password
+            if (password_verify($password, $user["password"])) {
+                $_SESSION["user_id"] = $user["id"];
+                $_SESSION["role"] = $role;
+                
+                // Store Roll No only for students
+                if ($role === "student") {
+                    $_SESSION["roll_no"] = $roll_no;
+                } else {
+                    $_SESSION["email"] = $email;
+                }
+
+                // Redirect user based on role
+                switch ($role) {
+                    case "student":
+                        header("Location: ../student/student_dashboard.php");
+                        break;
+                    case "teacher":
+                        header("Location: ../teacher/teacher_dashboard.php");
+                        break;
+                    case "admin":
+                        header("Location: ../admin/admin_dashboard.php");
+                        break;
+                }
+                exit();
+            } else {
+                $error_msg = "Invalid password!";
             }
-            exit();
         } else {
-            $error_msg = "Invalid password!";
+            $error_msg = "User not found!";
         }
     } else {
-        $error_msg = "User not found!";
+        $error_msg = "Database error: " . $stmt->error;
     }
-    
+
+    // Close statement
+    $stmt->close();
     $mysqli->close();
+
+    // Show error message using JavaScript alert
+    echo "<script>alert('$error_msg'); window.history.back();</script>";
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -104,20 +124,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php endif; ?>
 
             <div id="login">
-                <div id="emailField" style="margin-left: 280px;">
+                <div id="emailField" style="margin-left: 270px;">
                     <label>Email: <input type="email" id="email" name="email"></label>
                 </div>
 
-                <div id="rollNoField" style="margin-left: 280px; display: none;">
+                <div id="rollNoField" style="margin-left: 260px; display: none;">
                     <label>Roll No: <input type="text" id="roll_no" name="roll_no"></label> 
                 </div>
 
-                <div style="margin-left: 280px;">
+                <div style="margin-left: 230px;">
                     <label>Password: <input type="password" id="password" name="password" required autocomplete="off"></label> 
                 </div>
 
-                <div style="margin-left: 280px;">
+                <div style="margin-left: 280px; margin-top:20px">
                     <input type="submit" id="Btn" value="Log In">
+                    <p> haven't any account? <a href="register.php" style="color: lightblue; text-decoration: none;">Signup here</a>.</p>
+
                 </div>
             </div>
         </section>
