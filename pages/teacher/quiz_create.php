@@ -6,29 +6,48 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] !== 'teacher') {
 }
 
 require '../../config.php'; // Ensure database connection works
+// Fetch subjects assigned to this teacher
+$teacher_id = $_SESSION['user_id'];
+$query = "SELECT subjects.id, subjects.name 
+          FROM teacher_subjects 
+          JOIN subjects ON teacher_subjects.subject_id = subjects.id 
+          WHERE teacher_subjects.teacher_id = ?";
+$stmt = $mysqli->prepare($query);
+$stmt->bind_param("i", $teacher_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
+$assigned_subjects = [];
+while ($row = $result->fetch_assoc()) {
+    $assigned_subjects[] = $row;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate inputs
-    if (empty($_POST['quiz_title']) || empty($_POST['department']) || empty($_POST['semester']) || empty($_POST['time_limit']) || !isset($_POST['question'])) {
+    if (empty($_POST['quiz_title']) || empty($_POST['department']) || empty($_POST['semester']) || empty($_POST['time_limit']) || empty($_POST['question'])) {
         echo "<script>alert('Please fill all fields correctly.');</script>";
-    } else {
+        exit();
+    }
+     else {
         $quiz_title = trim($_POST['quiz_title']);
         $department = $_POST['department'];
         $semester = $_POST['semester'];
         $time_limit = (int)$_POST['time_limit'];
         $teacher_id = $_SESSION['user_id'];
+        $subject = $_POST['subject'];
+        $status = isset($_POST['publish_quiz']) ? 'published' : (isset($_POST['save_as_draft']) ? 'draft' : 'draft');
 
-        // Determine quiz status (published or draft)
-        $status = isset($_POST['publish_quiz']) ? 'published' : 'draft';
+
+
 
         // Insert quiz into database
-        $stmt = $mysqli->prepare("INSERT INTO quiz (title, department, semester, time_limit, teacher_id, status) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssiss", $quiz_title, $department, $semester, $time_limit, $teacher_id, $status);
+        $stmt = $mysqli->prepare("INSERT INTO quiz (title, department, semester, subject, time_limit, teacher_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssis", $quiz_title, $department, $semester, $subject, $time_limit, $teacher_id, $status);
+
 
         if ($stmt->execute()) {
             $quiz_id = $stmt->insert_id;
 
-            // Insert questions and options (even if it's a draft)
+            // Insert questions and options (even =if it's a draft)
             foreach ($_POST['question'] as $index => $question_text) {
                 $question_text = trim($question_text);
 
@@ -61,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 <?php include '../../components/teacher_header.php'; ?>
@@ -70,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="text-center">Create a New Quiz</h1>
 
     <div class="card shadow p-4 mx-auto" style="max-width: 600px;">
-        <form method="POST">
+        <form method="POST" action="quiz_create.php">
             <div class="mb-3">
                 <label class="form-label">Quiz Title:</label>
                 <input type="text" name="quiz_title" class="form-control" required>
@@ -79,12 +98,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
                 <label class="form-label">Department:</label>
                 <select name="department" class="form-select" required>
-                    <option value="Software Engineering">Software Engineering</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Information Technology">Information Technology</option>
+                <option value="Computer Science">Computer Science</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Software Engineering">Software Engineering</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Data Science">Data Science</option>
+        </select>
                 </select>
             </div>
 
+<div class="mb-3">
+                <label class="form-label">Select Subject:</label>
+                <select name="subject" class="form-select" required>
+    <?php foreach ($assigned_subjects as $subject) { ?>
+        <option value="<?= htmlspecialchars($subject['name']) ?>"><?= htmlspecialchars($subject['name']) ?></option>
+    <?php } ?>
+</select>
+            </div>
             <div class="mb-3">
                 <label class="form-label">Semester:</label>
                 <select name="semester" class="form-select" required>
@@ -147,13 +177,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
 let questionIndex = 1;
+
 function addQuestion() {
-    // Similar code for dynamically adding questions
+    let questionsDiv = document.getElementById("questions");
+
+    let newQuestion = document.createElement("div");
+    newQuestion.classList.add("question", "mb-3", "p-3", "border", "rounded", "position-relative");
+
+    newQuestion.innerHTML = `
+        <label class="form-label">Question:</label>
+        <input type="text" name="question[]" class="form-control mb-2" required>
+
+        <div class="options">
+            <label class="form-label">Options:</label>
+            <div class="input-group mb-2">
+                <span class="input-group-text">A</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">B</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">C</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text">D</span>
+                <input type="text" name="option[${questionIndex}][]" class="form-control" required>
+            </div>
+        </div>
+
+        <label class="form-label">Correct Answer:</label>
+        <select name="correct_option[${questionIndex}]" class="form-select">
+            <option value="0">A</option>
+            <option value="1">B</option>
+            <option value="2">C</option>
+            <option value="3">D</option>
+        </select>
+
+        <button type="button" class="btn btn-danger btn-sm mt-2 position-absolute top-0 end-0" onclick="deleteQuestion(this)">✖</button>
+    `;
+
+    questionsDiv.appendChild(newQuestion);
+    questionIndex++; // Increment index to maintain unique array keys
 }
 
 function deleteQuestion(button) {
     button.parentElement.remove();
+    questionIndex--; // Reduce index to maintain unique numbering
 }
+
 </script>
 
 <?php include '../../components/teacher_footer.php'; ?>

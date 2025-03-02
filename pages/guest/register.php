@@ -1,5 +1,5 @@
 <?php
-require_once "../../config.php"; // Ensure database connection is correct
+require_once "../../config.php"; // Ensure correct database connection
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = trim($_POST["fName"]);
@@ -8,40 +8,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $university = trim($_POST["university_name"]);
     $role = $_POST["role"] ?? "student";
+    $department = trim($_POST["department"]);
 
     $mysqli->begin_transaction();
     try {
         if ($role === "student") {
             $semester = trim($_POST["semester"]);
-            $department = trim($_POST["department"]);
             $roll_no = trim($_POST["roll_no"]);
+
+            // Validate Roll Number Format (SSI-SSS-III)
+            if (!preg_match("/^[A-Z]{2}[0-9]{2}-[A-Z]{3}-[0-9]{3}$/", $roll_no)) {
+                throw new Exception("Invalid roll number format! Must be in IA12-CSE-016 format.");
+            }
 
             // Check if roll number already exists (case-insensitive)
             $checkRoll = $mysqli->prepare("SELECT roll_no FROM student_info WHERE LOWER(roll_no) = LOWER(?)");
             $checkRoll->bind_param("s", $roll_no);
             $checkRoll->execute();
             $checkRoll->store_result();
-
             if ($checkRoll->num_rows > 0) {
                 throw new Exception("Roll number already exists!");
             }
             $checkRoll->close();
 
             // Auto-generate a password for students
-            $plainPassword = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*"), 0, 8);
-            $password = password_hash($plainPassword, PASSWORD_DEFAULT);
+            $plainPassword = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"), 0, 8);
         } else {
-            $department = trim($_POST["teacher_department"] ?? "");
-            if (empty($department)) {
-                throw new Exception("Teacher department is required.");
-            }
-
             $plainPassword = trim($_POST["password"]);
             if (strlen($plainPassword) < 6) {
                 throw new Exception("Password must be at least 6 characters long.");
             }
-            $password = password_hash($plainPassword, PASSWORD_DEFAULT);
         }
+
+        // Hash the password
+        $password = password_hash($plainPassword, PASSWORD_DEFAULT);
 
         // Insert into the user table
         $sql = "INSERT INTO user (first_name, last_name, gender, email, password, university_name, role) 
@@ -63,9 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $stmt->close();
 
-            // Show password alert before redirecting
             echo "<script>
-                alert('Account created successfully! Your password is: $plainPassword');
+                alert('Student account created successfully! Your password is: $plainPassword');
                 window.location.href = 'login.php';
             </script>";
         } else {
@@ -77,7 +76,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $stmt->close();
 
-            // Ensure transaction commits before redirecting
             echo "<script>
                 alert('Teacher account created successfully!');
                 window.location.href = 'login.php';
@@ -88,12 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         $mysqli->rollback();
         error_log("Error: " . $e->getMessage());
-        echo "<script>alert('Registration failed: " . $e->getMessage() . "'); window.history.back();</script>";
+        $errorMessage = addslashes($e->getMessage()); // Escape special characters
+echo "<script>
+    alert('Registration failed: $errorMessage');
+    window.history.back();
+</script>";
+
     }
 
     $mysqli->close();
 }
 ?>
+
+?>
+
 
 
 
@@ -110,33 +116,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var studentFields = document.getElementById("studentFields");
             var teacherFields = document.getElementById("teacherFields");
             var passwordInput = document.getElementById("password");
-            var teacherDept = document.getElementById("teacher_department");
             var rollNo = document.getElementById("roll_no");
             var semester = document.getElementById("semester");
-            var dept = document.getElementById("department");
 
             if (role === "student") {
                 studentFields.style.display = "block";
                 teacherFields.style.display = "none";
                 rollNo.setAttribute("required", "true");
                 semester.setAttribute("required", "true");
-                dept.setAttribute("required", "true");
                 passwordInput.removeAttribute("required");
-                teacherDept.removeAttribute("required");
             } else {
                 studentFields.style.display = "none";
                 teacherFields.style.display = "block";
                 rollNo.removeAttribute("required");
                 semester.removeAttribute("required");
-                dept.removeAttribute("required");
                 passwordInput.setAttribute("required", "true");
-                teacherDept.setAttribute("required", "true");
             }
         }
 
-        function togglePassword() {
-            var passwordField = document.getElementById("password");
-            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        function validateRollNumber() {
+            var rollNo = document.getElementById("roll_no").value;
+            var errorSpan = document.getElementById("rollNoError");
+
+            if (!/^[A-Z]{3}-[A-Z]{3}-[0-9]{3}$/.test(rollNo)) {
+                errorSpan.textContent = "Invalid format! Use SSI-SSS-III (e.g., CSE-ABC-001).";
+            } else {
+                errorSpan.textContent = "";
+            }
         }
 
         function validatePassword() {
@@ -151,8 +157,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("togglePassword").addEventListener("click", togglePassword);
-            toggleFields(); // Ensure correct fields are shown on page load
+            document.getElementById("role").addEventListener("change", toggleFields);
+            document.getElementById("roll_no").addEventListener("keyup", validateRollNumber);
+            document.getElementById("password").addEventListener("keyup", validatePassword);
+            toggleFields();
         });
     </script>
 </head>
@@ -181,14 +189,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <!-- Student-specific fields -->
         <div id="studentFields">
-            <label for="semester">Semester: <input type="text" id="semester" name="semester"></label>
-            <label for="department">Department: <input type="text" id="department" name="department"></label>
+        <label for="semester">Semester:
+        <select id="semester" name="semester" required>
+            <option value="">Select Semester</option>
+            <option value="1st Semester">1st Semester</option>
+                    <option value="2nd Semester">2nd Semester</option>
+                    <option value="3rd Semester">3rd Semester</option>
+                    <option value="4th Semester">4th Semester</option>
+                    <option value="5th Semester">5th Semester</option>
+                    <option value="6th Semester">6th Semester</option>
+                    <option value="7th Semester">7th Semester</option>
+                    <option value="8th Semester">8th Semester</option>
+        </select>
+    
+
             <label for="roll_no">Roll Number: <input type="text" id="roll_no" name="roll_no"></label>
         </div>
-
+        <label for="department">Department:
+        <select id="department" name="department" required>
+            <option value="">Select Department</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Software Engineering">Software Engineering</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
+            <option value="Data Science">Data Science</option>
+        </select>
+    </label>
         <!-- Teacher-specific fields -->
         <div id="teacherFields">
-            <label for="teacher_department">Department: <input type="text" id="teacher_department" name="teacher_department"></label>
             <label for="password">Password:
                 <input type="password" id="password" name="password" onkeyup="validatePassword()">
                 <span id="togglePassword" style="cursor: pointer;">👁️</span>
@@ -197,6 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <input type="submit" value="Sign Up">
+        <p>Already have an account? <a href="login.php" style="color: lightblue";>Login here</a>.</p>
     </form>
 </body>
 </html>

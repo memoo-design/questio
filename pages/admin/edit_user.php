@@ -18,7 +18,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $user_id = intval($_GET['id']);
 
 // Fetch user details
-$sql = "SELECT * FROM user WHERE id = ?";
+$sql = "SELECT id, first_name, last_name, email, role, password FROM user WHERE id = ?";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -61,18 +61,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $role = trim($_POST['role']);
     $department = trim($_POST['department']);
     $semester = trim($_POST['semester']);
+    $new_password = trim($_POST['password']);
 
-    // Prevent changing role to admin
+    // Prevent changing role of an admin
     if ($user['role'] === 'admin' && $role !== 'admin') {
         $_SESSION['error'] = "Cannot change the role of an admin.";
         header("Location: admin_dashboard.php");
         exit();
     }
 
-    // Update user table
-    $updateUserQuery = "UPDATE user SET first_name = ?, last_name = ?, email = ?, role = ? WHERE id = ?";
-    $stmt = $mysqli->prepare($updateUserQuery);
-    $stmt->bind_param("ssssi", $first_name, $last_name, $email, $role, $user_id);
+    // Update user table (with password only if provided)
+    if (!empty($new_password)) {
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $updateUserQuery = "UPDATE user SET first_name = ?, last_name = ?, email = ?, role = ?, password = ? WHERE id = ?";
+        $stmt = $mysqli->prepare($updateUserQuery);
+        $stmt->bind_param("sssssi", $first_name, $last_name, $email, $role, $hashed_password, $user_id);
+    } else {
+        $updateUserQuery = "UPDATE user SET first_name = ?, last_name = ?, email = ?, role = ? WHERE id = ?";
+        $stmt = $mysqli->prepare($updateUserQuery);
+        $stmt->bind_param("ssssi", $first_name, $last_name, $email, $role, $user_id);
+    }
 
     if ($stmt->execute()) {
         // Update department/semester based on role
@@ -115,6 +123,10 @@ $mysqli->close();
             <div class="alert alert-danger"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
         <?php endif; ?>
 
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+        <?php endif; ?>
+
         <form method="post">
             <div class="mb-3">
                 <label class="form-label">First Name</label>
@@ -149,6 +161,13 @@ $mysqli->close();
                 <label class="form-label">Semester</label>
                 <input type="text" name="semester" value="<?= htmlspecialchars($semester) ?>" class="form-control">
             </div>
+
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                <div class="mb-3">
+                    <label class="form-label">New Password (Leave blank to keep unchanged)</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+            <?php endif; ?>
 
             <button type="submit" class="btn btn-primary">Update</button>
             <a href="admin_dashboard.php" class="btn btn-secondary">Cancel</a>
