@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "../../config.php";
-require_once "login_logs.php";
+
 
 // Ensure only admins can access
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -59,12 +59,6 @@ ORDER BY student_attempts.id DESC";
 
 $resultAttempts = $mysqli->query($sqlAttempts);
 
-// Fetch login logs
-$sqlLogs = "SELECT user.first_name, user.last_name, login_logs.login_time FROM login_logs 
-            JOIN user ON login_logs.user_id = user.id 
-            ORDER BY login_logs.id DESC LIMIT 10";
-
-$resultLogs = $mysqli->query($sqlLogs);
 
 $mysqli->close();
 ?>
