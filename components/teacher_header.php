@@ -1,7 +1,10 @@
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
     <div class="container">
-        <a class="navbar-brand" href="#">Questio - Teacher Panel</a>
+          <!-- Logo -->
+          <a class="navbar-brand ms-0" href="teacher_dashboard.php">
+            <img src="../../public/images/logo.png"  width="20%" alt="Questio-Logo" class="logo">
+            Teacher-Dashboard
+        </a>
 
         <!-- Toggle button for mobile view -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
