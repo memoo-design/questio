@@ -7,17 +7,18 @@ if (!isset($_SESSION['roll_no'])) {
     exit();
 }
 
-// Ensure the database connection is established
+// Ensure database connection is established
 if (!$mysqli) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
 $roll_no = $_SESSION['roll_no'];
 
-// Fetch student ID using roll number
-$sql_student = "SELECT u.id FROM user u
-JOIN student_info s ON u.id = s.user_id
-WHERE s.roll_no = ? AND u.role = 'student'";
+// Fetch student ID, department, and semester in **one query**
+$sql_student = "SELECT u.id AS student_id, s.department, s.semester 
+                FROM user u
+                JOIN student_info s ON u.id = s.user_id
+                WHERE s.roll_no = ? AND u.role = 'student'";
 
 $stmt_student = $mysqli->prepare($sql_student);
 $stmt_student->bind_param("s", $roll_no);
@@ -30,39 +31,37 @@ if ($result_student->num_rows === 0) {
     exit();
 }
 
-$student_data = $result_student->fetch_assoc();
-$student_id = $student_data['id'];
-
-// Fetch student's department and semester from student_info
-$sql_student_info = "SELECT department, semester FROM student_info WHERE user_id = ?";
-
-$stmt_student_info = $mysqli->prepare($sql_student_info);
-$stmt_student_info->bind_param("i", $student_id);
-$stmt_student_info->execute();
-$result_student_info = $stmt_student_info->get_result();
-$student_info = $result_student_info->fetch_assoc();
-
+$student_info = $result_student->fetch_assoc();
+$student_id = $student_info['student_id'];
 $department = $student_info['department'];
 $semester = $student_info['semester'];
+$stmt_student->close();
 
-// Fetch pending quizzes based on department & semester, ensuring they are published and not attempted
-$sql_pending = "SELECT id, title, time_limit FROM quiz 
-WHERE department = ? 
-AND semester = ? 
-AND status = 'published' 
-AND id NOT IN (SELECT quiz_id FROM student_attempts WHERE student_id = ?)";
+// Fetch pending quizzes
+$sql_pending = "SELECT id, title, time_limit 
+                FROM quiz 
+                WHERE department = ? 
+                AND semester = ? 
+                AND status = 'published' 
+                AND id NOT IN (SELECT quiz_id FROM student_attempts WHERE student_id = ?)";
+
 $stmt_pending = $mysqli->prepare($sql_pending);
 $stmt_pending->bind_param("ssi", $department, $semester, $student_id);
 $stmt_pending->execute();
 $result_pending = $stmt_pending->get_result();
+$stmt_pending->close();
 
-// Fetch submitted quizzes with scores and grades
-$sql_submitted = "SELECT q.title, sa.score, sa.total_questions, sa.grade FROM student_attempts sa
-JOIN quiz q ON sa.quiz_id = q.id WHERE sa.student_id = ?";
+// Fetch submitted quizzes
+$sql_submitted = "SELECT q.title, q.subject, sa.score, sa.total_questions, sa.grade 
+                  FROM student_attempts sa
+                  JOIN quiz q ON sa.quiz_id = q.id 
+                  WHERE sa.student_id = ?";
+
 $stmt_submitted = $mysqli->prepare($sql_submitted);
 $stmt_submitted->bind_param("i", $student_id);
 $stmt_submitted->execute();
 $result_submitted = $stmt_submitted->get_result();
+$stmt_submitted->close();
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +70,7 @@ $result_submitted = $stmt_submitted->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: white; }
     </style>
@@ -97,7 +96,7 @@ $result_submitted = $stmt_submitted->get_result();
                             <td><?= htmlspecialchars($quiz['title']) ?></td>
                             <td><?= htmlspecialchars($quiz['time_limit']) ?> min</td>
                             <td>
-                                <a href="start_quiz.php?quiz_id=<?= htmlspecialchars($quiz['id']) ?>" class="btn btn-primary">Start Quiz</a>
+                                <a href="start_quiz.php?quiz_id=<?= (int)$quiz['id'] ?>" class="btn btn-primary">Start Quiz</a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -113,6 +112,7 @@ $result_submitted = $stmt_submitted->get_result();
                 <thead class="table-light text-center">
                     <tr>
                         <th>Quiz Title</th>
+                        <th>Subject</th>
                         <th>Score</th>
                         <th>Total Questions</th>
                         <th>Grade</th>
@@ -122,6 +122,7 @@ $result_submitted = $stmt_submitted->get_result();
                     <?php while ($quiz = $result_submitted->fetch_assoc()): ?>
                         <tr class="<?= ($quiz['grade'] === 'F') ? 'table-danger' : '' ?>">
                             <td><?= htmlspecialchars($quiz['title']) ?></td>
+                            <td><?= htmlspecialchars($quiz['subject']) ?></td>
                             <td><?= htmlspecialchars($quiz['score']) ?></td>
                             <td><?= htmlspecialchars($quiz['total_questions']) ?></td>
                             <td><?= htmlspecialchars($quiz['grade']) ?></td>
