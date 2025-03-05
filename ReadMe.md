@@ -1,35 +1,35 @@
-<<<<<<<<<<<<<<Introduction
+Questio is a web-based quiz management system designed to streamline quiz creation, administration, and grading for teachers while providing an intuitive platform for students to attempt quizzes. 
+Built with PHP, HTML, CSS, JavaScript, and Bootstrap, it offers an efficient way to manage quizzes within academic settings.
 
-Questio is a web-based quiz management system designed to streamline the process of creating, managing, and evaluating quizzes for students and teachers. This system allows teachers to create and monitor quizzes while enabling students to attempt quizzes and receive instant feedback.
->>>>>>>>>>>For Admin:
-Manage teacher and student accounts.
-View and analyze overall system statistics.
-can remove quizzes.
-assign subjects to teachers
+Features
+For Teachers:
+✅ Secure login and access to the teacher dashboard
+✅ Create, edit, and delete quiz forms
+✅ View all quizzes along with attempted student responses
+✅ Auto-marking of quizzes with real-time result display
 
->>>>>>>>>>>For Teachers:
-Login and dashboard access.
-Create, delete, and edit quizzes.
-View students who attempted quizzes along with their obtained marks.
-Published quizzes appear as darft  for compuer department students
 
->>>>>>>>>For Students:
-View and attempt quizzes based on their registered university.
-Countdown timer displayed during the quiz attempt.
-Auto-marking of answers upon submission.
-Instant result display after quiz submission.
-auto password generation during registration
+For Students:
+✅ View and attempt quizzes based on university registration
+✅ Countdown timer for each quiz attempt
+✅ Instant  results after submission
 
->>>>>>>>>>>>>>Technologies Used
+Admin Panel:
+✅ Manage teachers and students
+✅ Assign subjects to teachers
+✅ Oversee quiz activities
+
+Technologies Used
+Backend: PHP (Core PHP)
 Frontend: HTML, CSS, JavaScript, Bootstrap
-Backend: PHP
 Database: MySQL
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<IMPORTANT>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-there is only one admin so he/she can't register her/his self from registration form
-admin gmail :admin@example.com
-password: 123
-PRODEJCT BY
-FA22-BSE-068,-016,-020
-GIT-HUB LINK
-https://github.com/memoo-design/questio.git
 
+How to Run the Project
+Clone the repository:
+[git clone https://github.com/yourusername/questio.git](https://github.com/memoo-design/questio.git)
+Configure the database:
+Import the provided SQL file into MySQL
+Update config.php with database credentials
+Start a local server XAMPP
+Open the project in a browser:
+http://localhost/questio
