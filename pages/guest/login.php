@@ -75,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,21 +103,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="../../public/css/bootstrap.min.css">
     <style>
         body {
+            margin: 0;
+            height: auto;
+            background-image: url('../../public/images/signup.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f8f9fa;
         }
+
         .login-container {
-            background: white;
-            padding: 30px;
+            background-color: rgba(179, 188, 185, 0.3);
+            color: black;
+            width: 80%;
+            max-width: 600px;
+          
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 5px 10px 0px;
+        }
+
+        input, select {
             width: 100%;
-            max-width: 400px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: rgba(242, 240, 239, 0.685) !important;
+            padding: 5px;
+        }
+
+        .btn-primary {
+            background-color: rgb(96, 94, 94);
+            width: 100%;
+            height: 45px;
+            font-size: 18px;
+            margin-top: 15px;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: black;
+            color: whitesmoke;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                width: 90%;
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                width: 95%;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -134,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </div>
             
-            <h2 id="formTitle" class="text-center">ADMIN LOGIN</h2>
+            <h2 id="formTitle">ADMIN LOGIN</h2>
             
             <?php if (!empty($error_msg)): ?>
                 <p class="text-danger text-center"><?php echo htmlspecialchars($error_msg); ?></p>
@@ -155,9 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" id="password" name="password" class="form-control" required autocomplete="off">
             </div>
             
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Log In</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
             
             <p class="text-center mt-3">Haven't any account? <a href="register.php" style="color: lightblue; text-decoration: none;">Signup here</a>.</p>
         </form>
