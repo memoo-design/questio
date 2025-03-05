@@ -1,4 +1,5 @@
-<?php session_start(); ?>
+<?php session_start();
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +17,7 @@
 </head>
 <body>
     <?php
-include_once '../questio/components/guest_header.php';
+include_once 'components/guest_header.php';
 ?>
 
     <section id="Hero">
@@ -26,7 +27,7 @@ include_once '../questio/components/guest_header.php';
            <h3>Create, Share, and Analyze quizzes with ease</h3>
        </div>
        <div id ="hero_img"></div>
-       <a class="btn btn-primary sign-in-btn" href="../questio/pages/guest/register.php">Sign Up</a>
+       <a class="btn btn-primary sign-in-btn" href="../questio-git/pages/guest/register.php">Sign Up</a>
    </section>  
   <!-- About Us Section (Full-Width Black Background) -->
   <section id="about" class="w-100 bg-black text-white text-center py-5 animate__animated animate__fadeIn">
@@ -133,5 +134,5 @@ include_once '../questio/components/guest_header.php';
    </body>
    </html>
    <?php
-include_once '../questio/components/guest_footer.php';
+include_once '../questio-git/components/guest_footer.php';
 ?>

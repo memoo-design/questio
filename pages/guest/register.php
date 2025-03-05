@@ -163,69 +163,113 @@ echo "<script>
             toggleFields();
         });
     </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Questio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <form id="pform" action="register.php" method="POST">
-        <h1>SIGN UP FORM</h1>
-
-        <label for="fName">First Name: <input type="text" id="fName" name="fName" required></label>
-        <label for="lName">Last Name: <input type="text" id="lName" name="lName"></label>
-
-        <fieldset>
-            <legend>Gender:</legend>
-            <label><input type="radio" name="gender" value="male" required> Male</label>
-            <label><input type="radio" name="gender" value="female" required> Female</label>
-        </fieldset>
-
-        <label for="role">Role:
-            <select id="role" name="role" required onchange="toggleFields()">
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-            </select>
-        </label>
-
-        <label for="email">Email: <input type="email" id="email" name="email" required></label>
-        <label for="university_name">University Name: <input type="text" id="university_name" name="university_name" required></label>
-
-        <!-- Student-specific fields -->
-        <div id="studentFields">
-        <label for="semester">Semester:
-        <select id="semester" name="semester" required>
-            <option value="">Select Semester</option>
-            <option value="1st Semester">1st Semester</option>
-                    <option value="2nd Semester">2nd Semester</option>
-                    <option value="3rd Semester">3rd Semester</option>
-                    <option value="4th Semester">4th Semester</option>
-                    <option value="5th Semester">5th Semester</option>
-                    <option value="6th Semester">6th Semester</option>
-                    <option value="7th Semester">7th Semester</option>
-                    <option value="8th Semester">8th Semester</option>
-        </select>
-    
-
-            <label for="roll_no">Roll Number: <input type="text" id="roll_no" name="roll_no"></label>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="text-center">Sign Up</h2>
+            <form id="pform" action="register.php" method="POST">
+                <div class="mb-3">
+                    <label for="fName" class="form-label">First Name</label>
+                    <input type="text" id="fName" name="fName" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="lName" class="form-label">Last Name</label>
+                    <input type="text" id="lName" name="lName" class="form-control">
+                </div>
+                <fieldset class="mb-3">
+                    <legend class="fs-6">Gender</legend>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" value="male" required>
+                        <label class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" value="female" required>
+                        <label class="form-check-label">Female</label>
+                    </div>
+                </fieldset>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select id="role" name="role" class="form-select" required onchange="toggleFields()">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="university_name" class="form-label">University Name</label>
+                    <input type="text" id="university_name" name="university_name" class="form-control" required>
+                </div>
+                <div id="studentFields">
+                    <div class="mb-3">
+                        <label for="semester" class="form-label">Semester</label>
+                        <select id="semester" name="semester" class="form-select" required>
+                            <option value="">Select Semester</option>
+                            <option value="1st Semester">1st Semester</option>
+                            <option value="2nd Semester">2nd Semester</option>
+                            <option value="3rd Semester">3rd Semester</option>
+                            <option value="4th Semester">4th Semester</option>
+                            <option value="5th Semester">5th Semester</option>
+                            <option value="6th Semester">6th Semester</option>
+                            <option value="7th Semester">7th Semester</option>
+                            <option value="8th Semester">8th Semester</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="roll_no" class="form-label">Roll Number</label>
+                        <input type="text" id="roll_no" name="roll_no" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department</label>
+                    <select id="department" name="department" class="form-select" required>
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Software Engineering">Software Engineering</option>
+                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                        <option value="Data Science">Data Science</option>
+                    </select>
+                </div>
+                <div id="teacherFields" class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" class="form-control" onkeyup="validatePassword()">
+                        <span class="input-group-text" id="togglePassword" style="cursor: pointer;">👁️</span>
+                    </div>
+                    <small id="passwordError" class="text-danger"></small>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </div>
+                <p class="text-center mt-3">Already have an account? <a href="login.php" style="color: blue;">Login here</a>.</p>
+            </form>
         </div>
-        <label for="department">Department:
-        <select id="department" name="department" required>
-            <option value="">Select Department</option>
-            <option value="Computer Science">Computer Science</option>
-            <option value="Information Technology">Information Technology</option>
-            <option value="Software Engineering">Software Engineering</option>
-            <option value="Artificial Intelligence">Artificial Intelligence</option>
-            <option value="Data Science">Data Science</option>
-        </select>
-    </label>
-        <!-- Teacher-specific fields -->
-        <div id="teacherFields">
-            <label for="password">Password:
-                <input type="password" id="password" name="password" onkeyup="validatePassword()">
-                <span id="togglePassword" style="cursor: pointer;">👁️</span>
-            </label>
-            <small id="passwordError"></small>
-        </div>
-
-        <input type="submit" value="Sign Up">
-        <p>Already have an account? <a href="login.php" style="color: lightblue";>Login here</a>.</p>
-    </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

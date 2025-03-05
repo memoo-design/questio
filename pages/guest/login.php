@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="../../public/css/register.css">
+    <link rel="stylesheet" href="../../public/css/bootstrap.min.css">
     <script>
         function updateForm() {
             var role = document.getElementById("role").value;
@@ -104,45 +104,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
 </head>
 <body>
-    <form id="pform" action="login.php" method="POST">
-        <div style="position: absolute; top: 10px; left: 10px;">
-            <label for="role">Select Role:</label>
-            <select id="role" name="role" onchange="updateForm()">
-                <option value="admin" selected>Admin</option>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-            </select>
-        </div>
-
-        <section id="user">
-            <h1 id="formTitle">ADMIN LOGIN</h1>
-
+    <div class="login-container">
+        <form action="login.php" method="POST">
+            <div class="mb-3">
+                <label for="role" class="form-label">Select Role:</label>
+                <select id="role" name="role" class="form-select" onchange="updateForm()">
+                    <option value="admin" selected>Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+            
+            <h2 id="formTitle" class="text-center">ADMIN LOGIN</h2>
+            
             <?php if (!empty($error_msg)): ?>
-                <p style="color: red; text-align: center;"><?php echo htmlspecialchars($error_msg); ?></p>
+                <p class="text-danger text-center"><?php echo htmlspecialchars($error_msg); ?></p>
             <?php endif; ?>
 
-            <div id="login">
-                <div id="emailField" style="margin-left: 270px;">
-                    <label>Email: <input type="email" id="email" name="email"></label>
-                </div>
-
-                <div id="rollNoField" style="margin-left: 260px; display: none;">
-                    <label>Roll No: <input type="text" id="roll_no" name="roll_no"></label> 
-                </div>
-
-                <div style="margin-left: 230px;">
-                    <label>Password: <input type="password" id="password" name="password" required autocomplete="off"></label> 
-                </div>
-
-                <div style="margin-left: 280px; margin-top:20px">
-                    <input type="submit" id="Btn" value="Log In">
-                    <p> haven't any account? <a href="register.php" style="color: lightblue; text-decoration: none;">Signup here</a>.</p>
-
-                </div>
+            <div id="emailField" class="mb-3">
+                <label class="form-label">Email:</label>
+                <input type="email" id="email" name="email" class="form-control">
             </div>
-        </section>
-    </form>
+            
+            <div id="rollNoField" class="mb-3" style="display: none;">
+                <label class="form-label">Roll No:</label>
+                <input type="text" id="roll_no" name="roll_no" class="form-control">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required autocomplete="off">
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </div>
+            
+            <p class="text-center mt-3">Haven't any account? <a href="register.php" style="color: lightblue; text-decoration: none;">Signup here</a>.</p>
+        </form>
+    </div>
 </body>
 </html>
