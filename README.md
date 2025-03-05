@@ -27,9 +27,19 @@ Database: MySQL
 How to Run the Project
 Clone the repository:
 [git clone https://github.com/yourusername/questio.git](https://github.com/memoo-design/questio.git)
+
 Configure the database:
 Import the provided SQL file into MySQL
 Update config.php with database credentials
 Start a local server XAMPP
 Open the project in a browser:
 http://localhost/questio
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<important>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+admin can't register his self through registration form as he is only one
+so here is admin
+gmail : admin@example.com
+password : 123
+<<<<<<<<<<<<<<<<<<<<<<<<project by>>>>>>>>>>>>>>>>
+memoona waheed(FA22-BSE-068)
+Maryam-Qasim(FA22-BSE-016)
+Alisha-Awam(FA22-BSE-004)
