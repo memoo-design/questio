@@ -37,7 +37,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $mysqli->query("DELETE FROM teacher_info WHERE user_id = $user_id");
     $mysqli->query("DELETE FROM student_attempts WHERE student_id = $user_id");
     $mysqli->query("DELETE FROM quiz WHERE teacher_id = $user_id");
-    $mysqli->query("DELETE FROM login_logs WHERE user_id = $user_id");
+   
 
     // Delete the user
     $deleteQuery = "DELETE FROM user WHERE id = ?";

@@ -108,7 +108,9 @@ echo "<script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Sign Up</title>
+
+    <title>Sign Up - Questio</title>
+   
     <link rel="stylesheet" href="../../public/css/register.css">
     <script>
         function toggleFields() {
@@ -218,8 +220,18 @@ echo "<script>
         <!-- Teacher-specific fields -->
         <div id="teacherFields">
             <label for="password">Password:
-                <input type="password" id="password" name="password" onkeyup="validatePassword()">
-                <span id="togglePassword" style="cursor: pointer;">👁️</span>
+                <input type="password" id="password" name="password" onkeyup="validatePassword()"></label>
+               <label> <input type="checkbox" id="togglePassword"> Show Password
+                <script>
+        document.getElementById("togglePassword").addEventListener("change", function() {
+            let passwordField = document.getElementById("password");
+            if (this.checked) {
+                passwordField.type = "text"; // Show password
+            } else {
+                passwordField.type = "password"; // Hide password
+            }
+        });
+    </script>
             </label>
             <small id="passwordError"></small>
         </div>
@@ -227,5 +239,7 @@ echo "<script>
         <input type="submit" value="Sign Up">
         <p>Already have an account? <a href="login.php" style="color: lightblue";>Login here</a>.</p>
     </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
