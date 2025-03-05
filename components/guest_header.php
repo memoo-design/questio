@@ -31,7 +31,7 @@
                 <li class="nav-item"><a class="nav-link" href="#Hero">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="#service">Our Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#testimonial">Testimonials</a></li>
+                <li class="nav-item"><a class="nav-link" href="#testimonial-section">Testimonials</a></li>
                 <li class="nav-item"><a class="nav-link" href="#Contact">Contact Us</a></li>
                 <li class="nav-item">
                     <a class="btn btn-primary ms-lg-2 mt-2 mt-lg-0" href="../questio-git/pages/guest/login.php">Login</a>

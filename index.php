@@ -93,7 +93,7 @@ include_once 'components/guest_header.php';
     </div>
 </div>
 </section >
-    <section id ="testimonial section" class="container-fluid bg-black py-4">
+    <section id ="testimonial-section" class="container-fluid bg-black py-4">
     <h1 class="text-light text-center">Why People Love QUESTIO</h1>
 
     <div class="testimonial" >
