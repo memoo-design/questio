@@ -203,7 +203,7 @@ echo "<script>
                     <option value="7th Semester">7th Semester</option>
                     <option value="8th Semester">8th Semester</option>
         </select>
-    
+        </label>
 
             <label for="roll_no">Roll Number: <input type="text" id="roll_no" name="roll_no"></label>
         </div>

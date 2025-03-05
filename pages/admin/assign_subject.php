@@ -156,17 +156,18 @@ $assigned_subjects_result = $mysqli->query($query);
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Remove</button>
                         </form>
                         <form action="reassign_subject.php" method="POST" class="d-inline">
-                            <input type="hidden" name="assignment_id" value="<?= $row['assignment_id'] ?>">
-                            <select name="new_subject_id" class="form-select d-inline w-auto">
-                                <?php
-                                $subjects_result = $mysqli->query("SELECT id, name FROM subjects");
-                                while ($subject = $subjects_result->fetch_assoc()) {
-                                    echo "<option value='{$subject['id']}'>{$subject['name']}</option>";
-                                }
-                                ?>
-                            </select>
-                            <button type="submit" class="btn btn-custom btn-sm">Reassign</button>
-                        </form>
+    <input type="hidden" name="assignment_id" value="<?= $row['assignment_id'] ?>">
+    <select name="new_subject_id" class="form-select d-inline w-auto">
+        <?php
+        $subjects_result = $mysqli->query("SELECT id, name FROM subjects");
+        while ($subject = $subjects_result->fetch_assoc()) {
+            $selected = ($subject['name'] == $row['subject_name']) ? "selected" : "";
+            echo "<option value='{$subject['id']}' $selected>{$subject['name']}</option>";
+        }
+        ?>
+    </select>
+    <button type="submit" class="btn btn-custom btn-sm">Reassign</button>
+</form>
                     </td>
                 </tr>
             <?php } ?>

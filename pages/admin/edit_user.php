@@ -18,7 +18,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $user_id = intval($_GET['id']);
 
 // Fetch user details
-$sql = "SELECT id, first_name, last_name, email, role, password FROM user WHERE id = ?";
+$sql = "SELECT id, first_name, last_name, email, role FROM user WHERE id = ?";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -31,8 +31,6 @@ if ($result->num_rows !== 1) {
 }
 
 $user = $result->fetch_assoc();
-
-// Fetch department and semester if user is a student or teacher
 $department = "N/A";
 $semester = "N/A";
 
@@ -63,14 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $semester = trim($_POST['semester']);
     $new_password = trim($_POST['password']);
 
-    // Prevent changing role of an admin
     if ($user['role'] === 'admin' && $role !== 'admin') {
         $_SESSION['error'] = "Cannot change the role of an admin.";
         header("Location: admin_dashboard.php");
         exit();
     }
 
-    // Update user table (with password only if provided)
     if (!empty($new_password)) {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
         $updateUserQuery = "UPDATE user SET first_name = ?, last_name = ?, email = ?, role = ?, password = ? WHERE id = ?";
@@ -83,7 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($stmt->execute()) {
-        // Update department/semester based on role
         if ($role === 'student') {
             $updateStudentQuery = "INSERT INTO student_info (user_id, department, semester) 
                 VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE department = VALUES(department), semester = VALUES(semester)";
@@ -97,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bind_param("is", $user_id, $department);
             $stmt->execute();
         }
-
+        
         $_SESSION['success'] = "User updated successfully.";
         header("Location: admin_dashboard.php");
         exit();
@@ -153,14 +148,31 @@ $mysqli->close();
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Department</label>
-                <input type="text" name="department" value="<?= htmlspecialchars($department) ?>" class="form-control">
-            </div>
+    <label class="form-label">Department</label>
+    <select id="department" name="department" class="form-control" required>
+        <option value="">Select Department</option>
+        <option value="Computer Science" <?= $department === 'Computer Science' ? 'selected' : '' ?>>Computer Science</option>
+        <option value="Information Technology" <?= $department === 'Information Technology' ? 'selected' : '' ?>>Information Technology</option>
+        <option value="Software Engineering" <?= $department === 'Software Engineering' ? 'selected' : '' ?>>Software Engineering</option>
+        <option value="Artificial Intelligence" <?= $department === 'Artificial Intelligence' ? 'selected' : '' ?>>Artificial Intelligence</option>
+        <option value="Data Science" <?= $department === 'Data Science' ? 'selected' : '' ?>>Data Science</option>
+    </select>
+</div>
 
-            <div class="mb-3" id="semester_field" style="display: <?= $user['role'] === 'student' ? 'block' : 'none' ?>;">
-                <label class="form-label">Semester</label>
-                <input type="text" name="semester" value="<?= htmlspecialchars($semester) ?>" class="form-control">
-            </div>
+<div class="mb-3" id="semester_field" style="display: <?= $user['role'] === 'student' ? 'block' : 'none' ?>;">
+    <label class="form-label">Semester</label>
+    <select id="semester" name="semester" class="form-control" <?= $user['role'] === 'student' ? 'required' : '' ?>>
+        <option value="">Select Semester</option>
+        <option value="1st Semester" <?= $semester === '1st Semester' ? 'selected' : '' ?>>1st Semester</option>
+        <option value="2nd Semester" <?= $semester === '2nd Semester' ? 'selected' : '' ?>>2nd Semester</option>
+        <option value="3rd Semester" <?= $semester === '3rd Semester' ? 'selected' : '' ?>>3rd Semester</option>
+        <option value="4th Semester" <?= $semester === '4th Semester' ? 'selected' : '' ?>>4th Semester</option>
+        <option value="5th Semester" <?= $semester === '5th Semester' ? 'selected' : '' ?>>5th Semester</option>
+        <option value="6th Semester" <?= $semester === '6th Semester' ? 'selected' : '' ?>>6th Semester</option>
+        <option value="7th Semester" <?= $semester === '7th Semester' ? 'selected' : '' ?>>7th Semester</option>
+        <option value="8th Semester" <?= $semester === '8th Semester' ? 'selected' : '' ?>>8th Semester</option>
+    </select>
+</div>
 
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <div class="mb-3">
