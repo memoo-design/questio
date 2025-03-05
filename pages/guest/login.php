@@ -81,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>
     <link rel="stylesheet" href="../../public/css/bootstrap.min.css">
     <script>
+        
         function updateForm() {
             var role = document.getElementById("role").value;
             document.getElementById("formTitle").innerText = role.toUpperCase() + " LOGIN";
@@ -103,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </script>
+    
 <!DOCTYPE html>
 <html lang="en">
 <head>

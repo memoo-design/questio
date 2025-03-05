@@ -13,9 +13,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <style>
         .logo {
-            width: 50px; /* Adjust logo size */
+            width: 50px; 
             height: auto;
         }
+    .logout-btn:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color:black !important;
+}
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -43,14 +48,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'student') {
                     <a class="nav-link" href="student_profile.php">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-light ms-lg-2 mt-2 mt-lg-0 logout-btn" href="../../index.php">Logout</a>
-                </li>
+    <a class="nav-link btn btn-outline-light ms-lg-2 mt-2 mt-lg-0 logout-btn bg-transparent 
+       text-light" href="../../index.php">Logout</a>
+</li>
+
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- ✅ Correct Bootstrap JavaScript Bundle (Includes Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-w76A8pu4lH07SI/tqPpD1z7gJtIabjA0M2l9gW58cy4Re9Nc3EwRFSFjqv9U5sw+" 
         crossorigin="anonymous"></script>

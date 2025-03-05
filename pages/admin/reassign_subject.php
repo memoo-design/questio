@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ii", $new_subject_id, $assignment_id);
 
     if ($stmt->execute()) {
-        echo "Subject reassigned successfully!";
+        echo "<script>alert('Subject reassigned successfully!'); window.location.href=document.referrer;</script>";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "<script>alert('Error: " . $stmt->error . "'); window.location.href=document.referrer;</script>";
     }
 }
 ?>
