@@ -34,7 +34,7 @@ Update config.php with database credentials
 Start a local server XAMPP
 Open the project in a browser:
 http://localhost/questio
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<important>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<important>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 admin can't register his self through registration form as he is only one
 so here is admin
 gmail : admin@example.com
